@@ -89,7 +89,6 @@ export const useGeminiStream = (
   ) => Promise<SlashCommandProcessorResult | false>,
   shellModeActive: boolean,
   getPreferredEditor: () => EditorType | undefined,
-  onAuthError: () => void,
   performMemoryRefresh: () => Promise<void>,
   modelSwitchedFromQuotaError: boolean,
   setModelSwitchedFromQuotaError: React.Dispatch<React.SetStateAction<boolean>>,
@@ -689,7 +688,10 @@ export const useGeminiStream = (
         }
       } catch (error: unknown) {
         if (error instanceof UnauthorizedError) {
-          onAuthError();
+          // onAuthError();
+          console.error('Authentication error:', error);
+          setInitError('Authentication error. Please re-authenticate.');
+          return;
         } else if (!isNodeError(error) || error.name !== 'AbortError') {
           addItem(
             {
@@ -719,7 +721,6 @@ export const useGeminiStream = (
       setPendingHistoryItem,
       setInitError,
       geminiClient,
-      onAuthError,
       config,
       startNewPrompt,
       getPromptCount,

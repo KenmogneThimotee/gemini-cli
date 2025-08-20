@@ -19,7 +19,7 @@ import { useTerminalSize } from './hooks/useTerminalSize.js';
 import { useGeminiStream } from './hooks/useGeminiStream.js';
 import { useLoadingIndicator } from './hooks/useLoadingIndicator.js';
 import { useThemeCommand } from './hooks/useThemeCommand.js';
-import { useAuthCommand } from './hooks/useAuthCommand.js';
+// import { useAuthCommand } from './hooks/useAuthCommand.js';
 import { useFolderTrust } from './hooks/useFolderTrust.js';
 import { useEditorSettings } from './hooks/useEditorSettings.js';
 import { useSlashCommandProcessor } from './hooks/slashCommandProcessor.js';
@@ -32,8 +32,8 @@ import { ShellModeIndicator } from './components/ShellModeIndicator.js';
 import { InputPrompt } from './components/InputPrompt.js';
 import { Footer } from './components/Footer.js';
 import { ThemeDialog } from './components/ThemeDialog.js';
-import { AuthDialog } from './components/AuthDialog.js';
-import { AuthInProgress } from './components/AuthInProgress.js';
+// import { AuthDialog } from './components/AuthDialog.js';
+// import { AuthInProgress } from './components/AuthInProgress.js';
 import { EditorSettingsDialog } from './components/EditorSettingsDialog.js';
 import { FolderTrustDialog } from './components/FolderTrustDialog.js';
 import { ShellConfirmationDialog } from './components/ShellConfirmationDialog.js';
@@ -66,7 +66,7 @@ import {
   IdeIntegrationNudge,
   IdeIntegrationNudgeResult,
 } from './IdeIntegrationNudge.js';
-import { validateAuthMethod } from '../config/auth.js';
+// import { validateAuthMethod } from '../config/auth.js';
 import { useLogger } from './hooks/useLogger.js';
 import { StreamingContext } from './contexts/StreamingContext.js';
 import {
@@ -88,7 +88,6 @@ import { UpdateNotification } from './components/UpdateNotification.js';
 import {
   isProQuotaExceededError,
   isGenericQuotaExceededError,
-  UserTierId,
 } from '@google/gemini-cli-core';
 import { UpdateObject } from './utils/updateCheck.js';
 import ansiEscapes from 'ansi-escapes';
@@ -176,7 +175,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
   const [geminiMdFileCount, setGeminiMdFileCount] = useState<number>(0);
   const [debugMessage, setDebugMessage] = useState<string>('');
   const [themeError, setThemeError] = useState<string | null>(null);
-  const [authError, setAuthError] = useState<string | null>(null);
+  // const [authError, setAuthError] = useState<string | null>(null);
   const [editorError, setEditorError] = useState<string | null>(null);
   const [footerHeight, setFooterHeight] = useState<number>(0);
   const [corgiMode, setCorgiMode] = useState(false);
@@ -200,7 +199,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
   const [showPrivacyNotice, setShowPrivacyNotice] = useState<boolean>(false);
   const [modelSwitchedFromQuotaError, setModelSwitchedFromQuotaError] =
     useState<boolean>(false);
-  const [userTier, setUserTier] = useState<UserTierId | undefined>(undefined);
+  // const [userTier, setUserTier] = useState<UserTierId | undefined>(undefined);
   const [ideContextState, setIdeContextState] = useState<
     IdeContext | undefined
   >();
@@ -269,36 +268,36 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
     setIsTrustedFolder,
   );
 
-  const {
-    isAuthDialogOpen,
-    openAuthDialog,
-    handleAuthSelect,
-    isAuthenticating,
-    cancelAuthentication,
-  } = useAuthCommand(settings, setAuthError, config);
+  // const {
+  //   isAuthDialogOpen,
+  //   openAuthDialog,
+  //   handleAuthSelect,
+  //   isAuthenticating,
+  //   cancelAuthentication,
+  // } = useAuthCommand(settings, setAuthError, config);
 
-  useEffect(() => {
-    if (settings.merged.selectedAuthType && !settings.merged.useExternalAuth) {
-      const error = validateAuthMethod(settings.merged.selectedAuthType);
-      if (error) {
-        setAuthError(error);
-        openAuthDialog();
-      }
-    }
-  }, [
-    settings.merged.selectedAuthType,
-    settings.merged.useExternalAuth,
-    openAuthDialog,
-    setAuthError,
-  ]);
+  // useEffect(() => {
+  //   if (settings.merged.selectedAuthType && !settings.merged.useExternalAuth) {
+  //     const error = validateAuthMethod(settings.merged.selectedAuthType);
+  //     if (error) {
+  //       setAuthError(error);
+  //       openAuthDialog();
+  //     }
+  //   }
+  // }, [
+  //   settings.merged.selectedAuthType,
+  //   settings.merged.useExternalAuth,
+  //   openAuthDialog,
+  //   setAuthError,
+  // ]);
 
-  // Sync user tier from config when authentication changes
-  useEffect(() => {
-    // Only sync when not currently authenticating
-    if (!isAuthenticating) {
-      setUserTier(config.getGeminiClient()?.getUserTier());
-    }
-  }, [config, isAuthenticating]);
+  // // Sync user tier from config when authentication changes
+  // useEffect(() => {
+  //   // Only sync when not currently authenticating
+  //   if (!isAuthenticating) {
+  //     setUserTier(config.getGeminiClient()?.getUserTier());
+  //   }
+  // }, [config, isAuthenticating]);
 
   const {
     isEditorDialogOpen,
@@ -392,8 +391,8 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
         AuthType.LOGIN_WITH_GOOGLE
       ) {
         // Use actual user tier if available; otherwise, default to FREE tier behavior (safe default)
-        const isPaidTier =
-          userTier === UserTierId.LEGACY || userTier === UserTierId.STANDARD;
+        const isPaidTier = true
+          // userTier === UserTierId.LEGACY || userTier === UserTierId.STANDARD;
 
         // Check if this is a Pro quota exceeded error
         if (error && isProQuotaExceededError(error)) {
@@ -462,7 +461,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
     };
 
     config.setFlashFallbackHandler(flashFallbackHandler);
-  }, [config, addItem, userTier]);
+  }, [config, addItem]);
 
   // Terminal and UI setup
   const { rows: terminalHeight, columns: terminalWidth } = useTerminalSize();
@@ -496,10 +495,10 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
     return editorType as EditorType;
   }, [settings, openEditorDialog]);
 
-  const onAuthError = useCallback(() => {
-    setAuthError('reauth required');
-    openAuthDialog();
-  }, [openAuthDialog, setAuthError]);
+  // const onAuthError = useCallback(() => {
+  //   setAuthError('reauth required');
+  //   openAuthDialog();
+  // }, [openAuthDialog, setAuthError]);
 
   // Core hooks and processors
   const {
@@ -524,7 +523,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
     refreshStatic,
     setDebugMessage,
     openThemeDialog,
-    openAuthDialog,
+    // openAuthDialog,
     openEditorDialog,
     toggleCorgiMode,
     setQuittingMessages,
@@ -569,7 +568,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
     handleSlashCommand,
     shellModeActive,
     getPreferredEditor,
-    onAuthError,
+    // onAuthError,
     performMemoryRefresh,
     modelSwitchedFromQuotaError,
     setModelSwitchedFromQuotaError,
@@ -671,9 +670,9 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
         handleSlashCommand('/ide status');
       } else if (keyMatchers[Command.QUIT](key)) {
         // When authenticating, let AuthInProgress component handle Ctrl+C.
-        if (isAuthenticating) {
-          return;
-        }
+        // if (isAuthenticating) {
+        //   return;
+        // }
         if (!ctrlCPressedOnce) {
           cancelOngoingRequest?.();
         }
@@ -707,7 +706,6 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
       setCtrlDPressedOnce,
       ctrlDTimerRef,
       handleSlashCommand,
-      isAuthenticating,
       cancelOngoingRequest,
     ],
   );
@@ -835,8 +833,6 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
     if (
       initialPrompt &&
       !initialPromptSubmitted.current &&
-      !isAuthenticating &&
-      !isAuthDialogOpen &&
       !isThemeDialogOpen &&
       !isEditorDialogOpen &&
       !showPrivacyNotice &&
@@ -848,8 +844,6 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
   }, [
     initialPrompt,
     submitQuery,
-    isAuthenticating,
-    isAuthDialogOpen,
     isThemeDialogOpen,
     isEditorDialogOpen,
     showPrivacyNotice,
@@ -1012,38 +1006,6 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
                 settings={settings}
                 onSelect={() => closeSettingsDialog()}
                 onRestartRequest={() => process.exit(0)}
-              />
-            </Box>
-          ) : isAuthenticating ? (
-            <>
-              <AuthInProgress
-                onTimeout={() => {
-                  setAuthError('Authentication timed out. Please try again.');
-                  cancelAuthentication();
-                  openAuthDialog();
-                }}
-              />
-              {showErrorDetails && (
-                <OverflowProvider>
-                  <Box flexDirection="column">
-                    <DetailedMessagesDisplay
-                      messages={filteredConsoleMessages}
-                      maxHeight={
-                        constrainHeight ? debugConsoleMaxHeight : undefined
-                      }
-                      width={inputWidth}
-                    />
-                    <ShowMoreLines constrainHeight={constrainHeight} />
-                  </Box>
-                </OverflowProvider>
-              )}
-            </>
-          ) : isAuthDialogOpen ? (
-            <Box flexDirection="column">
-              <AuthDialog
-                onSelect={handleAuthSelect}
-                settings={settings}
-                initialErrorMessage={authError}
               />
             </Box>
           ) : isEditorDialogOpen ? (

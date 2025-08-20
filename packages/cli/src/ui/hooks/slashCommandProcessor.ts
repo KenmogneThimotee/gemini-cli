@@ -45,7 +45,6 @@ export const useSlashCommandProcessor = (
   refreshStatic: () => void,
   onDebugMessage: (message: string) => void,
   openThemeDialog: () => void,
-  openAuthDialog: () => void,
   openEditorDialog: () => void,
   toggleCorgiMode: () => void,
   setQuittingMessages: (message: HistoryItem[]) => void,
@@ -350,7 +349,6 @@ export const useSlashCommandProcessor = (
                 case 'dialog':
                   switch (result.dialog) {
                     case 'auth':
-                      openAuthDialog();
                       return { type: 'handled' };
                     case 'theme':
                       openThemeDialog();
@@ -529,7 +527,6 @@ export const useSlashCommandProcessor = (
     [
       config,
       addItem,
-      openAuthDialog,
       commands,
       commandContext,
       addMessage,
