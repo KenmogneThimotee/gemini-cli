@@ -23,6 +23,7 @@ import { SessionSummaryDisplay } from './SessionSummaryDisplay.js';
 import { Config } from '@google/gemini-cli-core';
 import { Help } from './Help.js';
 import { SlashCommand } from '../commands/types.js';
+import { LoginBox } from './LoginBox.js';
 
 interface HistoryItemDisplayProps {
   item: HistoryItem;
@@ -70,10 +71,17 @@ export const HistoryItemDisplay: React.FC<HistoryItemDisplayProps> = ({
         cliVersion={item.cliVersion}
         osVersion={item.osVersion}
         sandboxEnv={item.sandboxEnv}
-        modelVersion={item.modelVersion}
-        selectedAuthType={item.selectedAuthType}
-        gcpProject={item.gcpProject}
         ideClient={item.ideClient}
+      />
+    )}
+    {item.type === 'loggin' && (
+      <LoginBox
+        loginURL={item.logginURL}
+        buffer={item.buffer}
+        onTokenSubmit={item.onTokenSubmit}
+        successMessage={item.successMessage}
+        errorMessage={item.errorMessage}
+        isLoading={item.isLoading}
       />
     )}
     {item.type === 'help' && commands && <Help commands={commands} />}

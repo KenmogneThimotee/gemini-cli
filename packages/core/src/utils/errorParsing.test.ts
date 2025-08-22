@@ -28,11 +28,7 @@ describe('parseAndFormatApiError', () => {
     const errorMessage =
       'got status: 429 Too Many Requests. {"error":{"code":429,"message":"Rate limit exceeded","status":"RESOURCE_EXHAUSTED"}}';
     const result = parseAndFormatApiError(
-      errorMessage,
-      undefined,
-      undefined,
-      'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      errorMessage
     );
     expect(result).toContain('[API Error: Rate limit exceeded');
     expect(result).toContain(
@@ -44,11 +40,7 @@ describe('parseAndFormatApiError', () => {
     const errorMessage =
       'got status: 429 Too Many Requests. {"error":{"code":429,"message":"Rate limit exceeded","status":"RESOURCE_EXHAUSTED"}}';
     const result = parseAndFormatApiError(
-      errorMessage,
-      AuthType.LOGIN_WITH_GOOGLE,
-      undefined,
-      'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      errorMessage
     );
     expect(result).toContain('[API Error: Rate limit exceeded');
     expect(result).toContain(
@@ -103,7 +95,7 @@ describe('parseAndFormatApiError', () => {
       },
     });
 
-    const result = parseAndFormatApiError(errorMessage, AuthType.USE_GEMINI);
+    const result = parseAndFormatApiError(errorMessage);
     expect(result).toContain('Gemini 2.5 Pro Preview');
     expect(result).toContain(geminiMessage);
   });
@@ -122,7 +114,7 @@ describe('parseAndFormatApiError', () => {
       message: 'Rate limit exceeded',
       status: 429,
     };
-    const result = parseAndFormatApiError(error, AuthType.USE_VERTEX_AI);
+    const result = parseAndFormatApiError(error);
     expect(result).toContain('[API Error: Rate limit exceeded]');
     expect(result).toContain(vertexMessage);
   });
@@ -137,11 +129,7 @@ describe('parseAndFormatApiError', () => {
     const errorMessage =
       'got status: 429 Too Many Requests. {"error":{"code":429,"message":"Quota exceeded for quota metric \'Gemini 2.5 Pro Requests\' and limit \'RequestsPerDay\' of service \'generativelanguage.googleapis.com\' for consumer \'project_number:123456789\'.","status":"RESOURCE_EXHAUSTED"}}';
     const result = parseAndFormatApiError(
-      errorMessage,
-      AuthType.LOGIN_WITH_GOOGLE,
-      undefined,
-      'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      errorMessage
     );
     expect(result).toContain(
       "[API Error: Quota exceeded for quota metric 'Gemini 2.5 Pro Requests'",
@@ -158,11 +146,7 @@ describe('parseAndFormatApiError', () => {
     const errorMessage =
       'got status: 429 Too Many Requests. {"error":{"code":429,"message":"Rate limit exceeded","status":"RESOURCE_EXHAUSTED"}}';
     const result = parseAndFormatApiError(
-      errorMessage,
-      AuthType.LOGIN_WITH_GOOGLE,
-      undefined,
-      'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      errorMessage
     );
     expect(result).toContain('[API Error: Rate limit exceeded');
     expect(result).toContain(
@@ -177,11 +161,7 @@ describe('parseAndFormatApiError', () => {
     const errorMessage =
       'got status: 429 Too Many Requests. {"error":{"code":429,"message":"Quota exceeded for quota metric \'GenerationRequests\' and limit \'RequestsPerDay\' of service \'generativelanguage.googleapis.com\' for consumer \'project_number:123456789\'.","status":"RESOURCE_EXHAUSTED"}}';
     const result = parseAndFormatApiError(
-      errorMessage,
-      AuthType.LOGIN_WITH_GOOGLE,
-      undefined,
-      'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      errorMessage
     );
     expect(result).toContain(
       "[API Error: Quota exceeded for quota metric 'GenerationRequests'",
@@ -196,11 +176,7 @@ describe('parseAndFormatApiError', () => {
     const errorMessage =
       'got status: 429 Too Many Requests. {"error":{"code":429,"message":"Quota exceeded for quota metric \'Gemini 2.5 Pro Requests\' and limit \'RequestsPerDay\' of service \'generativelanguage.googleapis.com\' for consumer \'project_number:123456789\'.","status":"RESOURCE_EXHAUSTED"}}';
     const result = parseAndFormatApiError(
-      errorMessage,
-      AuthType.LOGIN_WITH_GOOGLE,
-      undefined,
-      'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      errorMessage
     );
     expect(result).toContain(
       "[API Error: Quota exceeded for quota metric 'Gemini 2.5 Pro Requests'",
@@ -215,11 +191,7 @@ describe('parseAndFormatApiError', () => {
     const errorMessage =
       'got status: 429 Too Many Requests. {"error":{"code":429,"message":"Quota exceeded for quota metric \'Gemini 2.5 Pro Requests\' and limit \'RequestsPerDay\' of service \'generativelanguage.googleapis.com\' for consumer \'project_number:123456789\'.","status":"RESOURCE_EXHAUSTED"}}';
     const result = parseAndFormatApiError(
-      errorMessage,
-      AuthType.LOGIN_WITH_GOOGLE,
-      UserTierId.STANDARD,
-      'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      errorMessage
     );
     expect(result).toContain(
       "[API Error: Quota exceeded for quota metric 'Gemini 2.5 Pro Requests'",
@@ -239,11 +211,7 @@ describe('parseAndFormatApiError', () => {
     const errorMessage =
       'got status: 429 Too Many Requests. {"error":{"code":429,"message":"Quota exceeded for quota metric \'Gemini 2.5 Pro Requests\' and limit \'RequestsPerDay\' of service \'generativelanguage.googleapis.com\' for consumer \'project_number:123456789\'.","status":"RESOURCE_EXHAUSTED"}}';
     const result = parseAndFormatApiError(
-      errorMessage,
-      AuthType.LOGIN_WITH_GOOGLE,
-      UserTierId.LEGACY,
-      'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      errorMessage
     );
     expect(result).toContain(
       "[API Error: Quota exceeded for quota metric 'Gemini 2.5 Pro Requests'",

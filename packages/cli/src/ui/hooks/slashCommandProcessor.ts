@@ -45,6 +45,7 @@ export const useSlashCommandProcessor = (
   refreshStatic: () => void,
   onDebugMessage: (message: string) => void,
   openThemeDialog: () => void,
+  openLoginDialog: (url?: string) => void,
   openEditorDialog: () => void,
   toggleCorgiMode: () => void,
   setQuittingMessages: (message: HistoryItem[]) => void,
@@ -112,9 +113,6 @@ export const useSlashCommandProcessor = (
           cliVersion: message.cliVersion,
           osVersion: message.osVersion,
           sandboxEnv: message.sandboxEnv,
-          modelVersion: message.modelVersion,
-          selectedAuthType: message.selectedAuthType,
-          gcpProject: message.gcpProject,
           ideClient: message.ideClient,
         };
       } else if (message.type === MessageType.HELP) {
@@ -362,6 +360,9 @@ export const useSlashCommandProcessor = (
                     case 'settings':
                       openSettingsDialog();
                       return { type: 'handled' };
+                    case 'login':
+                      openLoginDialog();
+                      return { type: 'handled' };
                     case 'help':
                       return { type: 'handled' };
                     default: {
@@ -531,6 +532,7 @@ export const useSlashCommandProcessor = (
       commandContext,
       addMessage,
       openThemeDialog,
+      openLoginDialog,
       openPrivacyNotice,
       openEditorDialog,
       setQuittingMessages,

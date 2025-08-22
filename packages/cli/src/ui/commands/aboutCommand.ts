@@ -23,11 +23,7 @@ export const aboutCommand: SlashCommand = {
         process.env.SEATBELT_PROFILE || 'unknown'
       })`;
     }
-    const modelVersion = context.services.config?.getModel() || 'Unknown';
     const cliVersion = await getCliVersion();
-    const selectedAuthType =
-      context.services.settings.merged.selectedAuthType || '';
-    const gcpProject = process.env.GOOGLE_CLOUD_PROJECT || '';
     const ideClient =
       context.services.config?.getIdeClient()?.getDetectedIdeDisplayName() ||
       '';
@@ -37,9 +33,6 @@ export const aboutCommand: SlashCommand = {
       cliVersion,
       osVersion,
       sandboxEnv,
-      modelVersion,
-      selectedAuthType,
-      gcpProject,
       ideClient,
     };
 

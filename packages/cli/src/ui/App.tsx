@@ -20,6 +20,7 @@ import { useGeminiStream } from './hooks/useGeminiStream.js';
 import { useLoadingIndicator } from './hooks/useLoadingIndicator.js';
 import { useThemeCommand } from './hooks/useThemeCommand.js';
 // import { useAuthCommand } from './hooks/useAuthCommand.js';
+import { useLoginCommand } from './hooks/useLoginCommand.js';
 import { useFolderTrust } from './hooks/useFolderTrust.js';
 import { useEditorSettings } from './hooks/useEditorSettings.js';
 import { useSlashCommandProcessor } from './hooks/slashCommandProcessor.js';
@@ -37,6 +38,7 @@ import { ThemeDialog } from './components/ThemeDialog.js';
 import { EditorSettingsDialog } from './components/EditorSettingsDialog.js';
 import { FolderTrustDialog } from './components/FolderTrustDialog.js';
 import { ShellConfirmationDialog } from './components/ShellConfirmationDialog.js';
+import { LoginBox } from './components/LoginBox.js';
 import { RadioButtonSelect } from './components/shared/RadioButtonSelect.js';
 import { Colors } from './colors.js';
 import { loadHierarchicalGeminiMemory } from '../config/config.js';
@@ -262,6 +264,17 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
 
   const { isSettingsDialogOpen, openSettingsDialog, closeSettingsDialog } =
     useSettingsCommand();
+
+  const {
+    isLoginDialogOpen,
+    openLoginDialog,
+    handleTokenSubmit,
+    loginURL,
+    loginError,
+    successMessage,
+    isLoading,
+    buffer: loginBuffer,
+  } = useLoginCommand(addItem);
 
   const { isFolderTrustDialogOpen, handleFolderTrustSelect } = useFolderTrust(
     settings,
@@ -523,7 +536,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
     refreshStatic,
     setDebugMessage,
     openThemeDialog,
-    // openAuthDialog,
+    openLoginDialog,
     openEditorDialog,
     toggleCorgiMode,
     setQuittingMessages,
@@ -759,7 +772,10 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
   }, [history, logger]);
 
   const isInputActive =
-    streamingState === StreamingState.Idle && !initError && !isProcessing;
+    streamingState === StreamingState.Idle && 
+    !initError && 
+    !isProcessing && 
+    !isLoginDialogOpen;
 
   const handleClearScreen = useCallback(() => {
     clearItems();
@@ -834,6 +850,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
       initialPrompt &&
       !initialPromptSubmitted.current &&
       !isThemeDialogOpen &&
+      !isLoginDialogOpen &&
       !isEditorDialogOpen &&
       !showPrivacyNotice &&
       geminiClient?.isInitialized?.()
@@ -845,6 +862,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
     initialPrompt,
     submitQuery,
     isThemeDialogOpen,
+    isLoginDialogOpen,
     isEditorDialogOpen,
     showPrivacyNotice,
     geminiClient,
@@ -1006,6 +1024,22 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
                 settings={settings}
                 onSelect={() => closeSettingsDialog()}
                 onRestartRequest={() => process.exit(0)}
+              />
+            </Box>
+          ) : isLoginDialogOpen ? (
+            <Box flexDirection="column">
+              {loginError && (
+                <Box marginBottom={1}>
+                  <Text color={Colors.AccentRed}>{loginError}</Text>
+                </Box>
+              )}
+              <LoginBox
+                loginURL={loginURL}
+                buffer={loginBuffer}
+                onTokenSubmit={handleTokenSubmit}
+                successMessage={successMessage || undefined}
+                errorMessage={loginError || undefined}
+                isLoading={isLoading}
               />
             </Box>
           ) : isEditorDialogOpen ? (

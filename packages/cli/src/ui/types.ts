@@ -8,6 +8,7 @@ import {
   ToolCallConfirmationDetails,
   ToolResultDisplay,
 } from '@google/gemini-cli-core';
+import { TextBuffer } from './components/shared/text-buffer.js';
 
 // Only defining the state enum needed by the UI
 export enum StreamingState {
@@ -92,10 +93,17 @@ export type HistoryItemAbout = HistoryItemBase & {
   cliVersion: string;
   osVersion: string;
   sandboxEnv: string;
-  modelVersion: string;
-  selectedAuthType: string;
-  gcpProject: string;
   ideClient: string;
+};
+
+export type HistoryItemLoggin = HistoryItemBase & {
+  type: 'loggin';
+  logginURL: string; // URL for login
+  buffer: TextBuffer;
+  onTokenSubmit: (token: string) => void;
+  successMessage?: string;
+  errorMessage?: string;
+  isLoading?: boolean;
 };
 
 export type HistoryItemHelp = HistoryItemBase & {
@@ -154,7 +162,8 @@ export type HistoryItemWithoutId =
   | HistoryItemModelStats
   | HistoryItemToolStats
   | HistoryItemQuit
-  | HistoryItemCompression;
+  | HistoryItemCompression
+  | HistoryItemLoggin;
 
 export type HistoryItem = HistoryItemWithoutId & { id: number };
 
